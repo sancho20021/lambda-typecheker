@@ -1,0 +1,17 @@
+name: python-app
+on: [push]
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: change dir
+        working-directory: ./simply-typed
+      - name: setup haskell
+      - uses: haskell/actions/setup@v1
+        with:
+          ghc-version: '8.8'
+          cabal-version: '3.3.0.0'
+        run: make tests
