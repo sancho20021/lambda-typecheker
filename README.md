@@ -1,5 +1,14 @@
 # Simply-typed lambda expressions type typechecker
 
+## Run instructions
+0. Make sure you have [cabal-install](https://cabal.readthedocs.io/en/latest/developing-packages.html) installed
+1. Go to [./simply-typed/](https://github.com/sancho20021/lambda-typecheker/tree/main/simply-typed) directory
+2. In the command line type the desired instruction:
+    - ```make run``` - run the typecheker
+    - ```make runShow``` - run the typecheker with showing errors
+    - ```make test``` - run tests for the typechecker
+    - ```make clean``` - clean generated build directory
+
 ## Grammar
     input       ::= [context '|-'] typed_expr
 
