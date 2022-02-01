@@ -1,4 +1,4 @@
-name: python-app
+name: typecheker tests
 on: [push]
 jobs:
   test:
@@ -11,7 +11,7 @@ jobs:
         uses: haskell/actions/setup@v1
         with:
           ghc-version: '8.8'
-          cabal-version: '3.3.0.0'
+          cabal-version: '3.0.0.0'
       - name: run tests
         working-directory: ./simply-typed
         run: make test
