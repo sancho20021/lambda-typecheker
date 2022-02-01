@@ -13,7 +13,7 @@ import ParserTest (sizedVar)
 import Solution (check)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (assertBool, testCase, (@=?))
-import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Gen, frequency, testProperty)
+import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Gen, frequency, testProperty, withMaxSuccess)
 
 checkerTests :: TestTree
 checkerTests = testGroup "Checker Tests" [ manualTests, qcTests ]
@@ -78,7 +78,7 @@ checkIncorrect description input =
 qcTests :: TestTree
 qcTests = testGroup "(checked by QuickCheck)"
   [ testProperty "Correct -> check = true" $
-    \(CorrectExpr deduce) ->  typeCheck deduce == Right ()
+    withMaxSuccess 1000 $ \(CorrectExpr deduce) ->  typeCheck deduce == Right ()
   ]
 
 type Ctx = Map Variable Type
