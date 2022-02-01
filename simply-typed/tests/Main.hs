@@ -1,4 +1,6 @@
-module Main where
+module Main
+  ( main
+  ) where
 import qualified CheckerTest
 import qualified ParserTest
 import System.Environment (setEnv)

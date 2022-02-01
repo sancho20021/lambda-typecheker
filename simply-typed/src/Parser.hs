@@ -1,4 +1,6 @@
-module Parser where
+module Parser
+  ( parse
+  ) where
 import Base (Context (Context), Deduce ((:|-)), Expr (V, (:.), (:@)), Type (Var, (:->)),
              TypeScheme (Full), TypedExpr ((:::)), TypedVar (..), Variable (Variable))
 import Control.Monad (void)
@@ -6,7 +8,7 @@ import Data.Char (isAlphaNum)
 import qualified Data.Map as Map
 import Data.Void (Void)
 import Text.Megaparsec (MonadParsec (eof, label, try), ParseErrorBundle, Parsec, between, many,
-                        optional, parseTest, runParser, satisfy, sepBy, some, (<|>))
+                        optional, runParser, satisfy, sepBy, some, (<|>))
 import Text.Megaparsec.Char (char, letterChar, space)
 import qualified Text.Megaparsec.Char.Lexer as L
 
@@ -120,6 +122,3 @@ lexeme = L.lexeme space
 
 symbol :: String -> Parser String
 symbol = L.symbol space
-
-test :: Show a => Parser a -> String -> IO ()
-test = parseTest

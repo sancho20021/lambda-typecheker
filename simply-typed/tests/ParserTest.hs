@@ -10,9 +10,8 @@ import Debug.Trace (trace, traceShow)
 import Parser (parse)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Gen, Positive (Positive), chooseInt, elements,
-                              frequency, oneof, sized)
+                              frequency, oneof, sized, withMaxSuccess)
 import qualified Test.Tasty.QuickCheck as QC
-import qualified Test.Tasty.SmallCheck as SC
 
 parserTests :: TestTree
 parserTests = testGroup "ParserTests" [qcProps]
@@ -20,7 +19,7 @@ parserTests = testGroup "ParserTests" [qcProps]
 qcProps :: TestTree
 qcProps = testGroup "(checked by QuickCheck)"
   [ QC.testProperty "parse . show == id" $
-    \deduce -> parse (show deduce) == Right deduce
+    withMaxSuccess 1000 $ \deduce -> parse (show deduce) == Right deduce
   ]
 
 instance Arbitrary Deduce where

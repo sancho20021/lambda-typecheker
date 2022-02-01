@@ -1,14 +1,27 @@
-module Base where
+module Base
+  ( Context (..)
+  , Deduce (..)
+  , Expr (..)
+  , MyError (..)
+  , Type (..)
+  , TypeScheme (..)
+  , TypedExpr (..)
+  , TypedVar (..)
+  , Variable (..)
+  ) where
 import Data.List (intercalate)
 import Data.Map (Map)
 import qualified Data.Map as Map
 
+-- | Variable
+-- Can be used in types and expressions
 newtype Variable = Variable String
   deriving (Eq, Ord)
 
 instance Show Variable where
   show (Variable x) = x
 
+-- | Expression type
 data Type
   = Var Variable
   | Type :-> Type
@@ -18,6 +31,7 @@ instance Show Type where
   show (Var s :-> b) = show s ++ " -> " ++ show b
   show (s :-> b)     = "(" ++ show s ++ ") -> " ++ show b
 
+-- | Lambda expression
 data Expr
   = V Variable
   | Expr :@ Expr
@@ -32,11 +46,13 @@ instance Show Expr where
         V var -> show var
         y     -> "(" ++ show y ++ ")"
 
+-- | Typed variable
 data TypedVar = Variable :^ Type
   deriving (Eq)
 instance Show TypedVar where
   show (var :^ t) = show var ++ " : " ++ show t
 
+-- | Context that contains free variables and their types
 newtype Context = Context (Map Variable Type)
   deriving (Eq)
 instance Show Context where
@@ -44,6 +60,7 @@ instance Show Context where
     let pairs = show . uncurry (:^) <$> Map.toList ctx
     in  intercalate ", " pairs
 
+-- | Fully or partially specified type
 data TypeScheme
   = Full Type
   | Partial TypeScheme
@@ -52,12 +69,14 @@ instance Show TypeScheme where
   show (Full typ)    = show typ
   show (Partial typ) = "? -> " ++ show typ
 
+-- | Typed expression
 data TypedExpr = Expr ::: TypeScheme
   deriving (Eq)
 instance Show TypedExpr where
   show (expr ::: t) = show expr ++ " : " ++ show t
 
-
+-- | Statement that expression
+-- has its type in specified context
 data Deduce = Context :|- TypedExpr
   deriving (Eq)
 instance Show Deduce where
@@ -73,6 +92,7 @@ infixr 6 :->
 infixr 6 :^
 infix 7 :@
 
+-- | Errors that occur while parsing or type-checking
 data MyError
   = MyError Deduce MyError
   | UndefinedVar Variable

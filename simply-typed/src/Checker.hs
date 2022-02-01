@@ -1,4 +1,6 @@
-module Checker where
+module Checker
+  ( typeCheck
+  ) where
 import Base (Context (Context), Deduce ((:|-)), Expr (V, (:.), (:@)), MyError (..),
              Type (Var, (:->)), TypeScheme (Full, Partial), TypedExpr ((:::)), TypedVar ((:^)),
              Variable)
@@ -8,6 +10,7 @@ import qualified Data.Map as Map
 
 type TErr a = Either MyError a
 
+-- | Type-check
 typeCheck :: Deduce -> TErr ()
 typeCheck = void . typeCheckTraced
 

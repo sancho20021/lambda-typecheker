@@ -1,9 +1,11 @@
 -----------------------------------------------------------------------------
 -- Church style simply-typed lambda expression type-checker
 -----------------------------------------------------------------------------
-module Main where
+module Main
+  ( main
+  ) where
 import Base (MyError (ParseError))
-import Parser (pInput, test)
+import Parser ()
 import Solution (check)
 import System.Environment (getArgs)
 
@@ -13,13 +15,6 @@ main = do
   if args == ["show"]
   then debugSolve
   else solve
-
-testLine :: IO ()
-testLine = do
-  putStrLn "type line"
-  line <- getLine
-  test pInput line
-  testLine
 
 solve :: IO ()
 solve = do

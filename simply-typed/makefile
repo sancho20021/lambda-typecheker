@@ -10,7 +10,7 @@ runShow: build
 	cabal new-run typecheck show
 
 test: build
-	cabal new-test
+	cabal new-test --test-show-details=streaming
 
 build:
 	cabal new-build
