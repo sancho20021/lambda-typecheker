@@ -7,11 +7,11 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - name: change dir
-        working-directory: ./simply-typed
       - name: setup haskell
+        working-directory: ./simply-typed
       - uses: haskell/actions/setup@v1
         with:
           ghc-version: '8.8'
           cabal-version: '3.3.0.0'
+      - name: run tests
         run: make tests
