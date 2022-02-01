@@ -20,7 +20,7 @@ parserTests = testGroup "ParserTests" [qcProps]
 qcProps :: TestTree
 qcProps = testGroup "(checked by QuickCheck)"
   [ QC.testProperty "parse . show == id" $
-    \deduce -> parse (show deduce) == Just deduce
+    \deduce -> parse (show deduce) == Right deduce
   ]
 
 instance Arbitrary Deduce where

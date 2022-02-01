@@ -1,29 +1,12 @@
 module Checker where
-import Base (Context (Context), Deduce ((:|-)), Expr (V, (:.), (:@)), Type (Var, (:->)),
-             TypeScheme (Full, Partial), TypedExpr ((:::)), TypedVar ((:^)), Variable)
+import Base (Context (Context), Deduce ((:|-)), Expr (V, (:.), (:@)), MyError (..),
+             Type (Var, (:->)), TypeScheme (Full, Partial), TypedExpr ((:::)), TypedVar ((:^)),
+             Variable)
 import Control.Monad (void)
 import Data.Map (Map)
 import qualified Data.Map as Map
 
-data PError
-  = PError Deduce PError
-  | UndefinedVar Variable
-  | EqFail String
-  | TypeError String TypedExpr
-  | DuplicateError Variable Type Type
-  deriving (Eq)
-
-instance Show PError where
-  show (PError context s)               = show s ++ "\n  in: " ++ show context
-  show (UndefinedVar s)                 = "UndefinedVar: " ++ show s
-  show (EqFail s)                       = "EqFail: " ++ s
-  show (TypeError typ (expr ::: eType)) =
-    "TypeError: different types of " ++ show expr ++ " are expected: 1) "
-      ++ typ ++ " 2) " ++ show eType
-  show (DuplicateError var t1 t2)           = "DuplicateError: conflicting bindings: "
-    ++ show (var :^ t1) ++ ", " ++ show (var :^ t2)
-
-type TErr a = Either PError a
+type TErr a = Either MyError a
 
 typeCheck :: Deduce -> TErr ()
 typeCheck = void . typeCheckTraced
@@ -31,7 +14,7 @@ typeCheck = void . typeCheckTraced
 -- | Typecheck and save context in case of incorrect type
 typeCheckTraced :: Deduce -> TErr Type
 typeCheckTraced (Context ctx :|- te) = case typeCheck' ctx te of
-  Left pe  -> Left $ PError (Context ctx :|- te) pe
+  Left pe  -> Left $ MyError (Context ctx :|- te) pe
   Right ty -> pure ty
 
 -- | Typecheck partially typed expression given the context

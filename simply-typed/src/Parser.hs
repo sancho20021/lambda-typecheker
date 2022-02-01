@@ -5,8 +5,8 @@ import Control.Monad (void)
 import Data.Char (isAlphaNum)
 import qualified Data.Map as Map
 import Data.Void (Void)
-import Text.Megaparsec (MonadParsec (eof, label, try), Parsec, between, many, optional, parseTest,
-                        satisfy, sepBy, some, (<|>), runParser)
+import Text.Megaparsec (MonadParsec (eof, label, try), ParseErrorBundle, Parsec, between, many,
+                        optional, parseTest, runParser, satisfy, sepBy, some, (<|>))
 import Text.Megaparsec.Char (char, letterChar, space)
 import qualified Text.Megaparsec.Char.Lexer as L
 
@@ -32,14 +32,12 @@ import qualified Text.Megaparsec.Char.Lexer as L
 --               | variable
 
 -- variable    ::= [a-z] [a-z0-9'_]*
--- 
+--
 
 type Parser = Parsec Void String
 
-parse :: String -> Maybe Deduce
-parse x = case runParser pInput "Input" x of
-  Left _ -> Nothing
-  Right de -> Just de
+parse :: String -> Either (ParseErrorBundle String Void) Deduce
+parse = runParser pInput "Input"
 
 pInput :: Parser Deduce
 pInput = between space eof pInput'

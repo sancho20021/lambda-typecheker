@@ -72,3 +72,23 @@ infixr 5 :.
 infixr 6 :->
 infixr 6 :^
 infix 7 :@
+
+data MyError
+  = MyError Deduce MyError
+  | UndefinedVar Variable
+  | EqFail String
+  | TypeError String TypedExpr
+  | DuplicateError Variable Type Type
+  | ParseError String
+  deriving (Eq)
+
+instance Show MyError where
+  show (MyError context s)               = show s ++ "\n  in: " ++ show context
+  show (UndefinedVar s)                 = "UndefinedVar: " ++ show s
+  show (EqFail s)                       = "EqFail: " ++ s
+  show (TypeError typ (expr ::: eType)) =
+    "TypeError: different types of " ++ show expr ++ " are expected: 1) "
+      ++ typ ++ " 2) " ++ show eType
+  show (DuplicateError var t1 t2)       = "DuplicateError: conflicting bindings: "
+    ++ show (var :^ t1) ++ ", " ++ show (var :^ t2)
+  show (ParseError s)                   = s
