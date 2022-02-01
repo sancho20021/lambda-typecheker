@@ -12,7 +12,6 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.QuickCheck (Arbitrary (arbitrary), Gen, Positive (Positive), chooseInt, elements,
                               frequency, oneof, sized)
 import qualified Test.Tasty.QuickCheck as QC
-import qualified Test.Tasty.SmallCheck as SC
 
 parserTests :: TestTree
 parserTests = testGroup "ParserTests" [qcProps]
