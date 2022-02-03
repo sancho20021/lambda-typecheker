@@ -21,7 +21,7 @@
                 | (type) '->' type
                 | variable '->' type
 
-    expr        ::= [application] '\' variable '.' expr
+    expr        ::= [application] '\' variable ':' type '.' expr
                 | application
 
     application ::= atom
